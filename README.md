@@ -1,11 +1,6 @@
-Sawa! Hapa kuna mfano wa **professional README.md** kwa GitHub kwa project yako, ikiwa na bold, structured, na inahusisha license yako ya custom **J PROJECT LICENSE (JPL)**.
 
----
 
-````markdown
 # **J EASY SCRIPT RUNNER**
-
-[![License](https://img.shields.io/badge/License-JPL-blue.svg)](LICENSE.md)
 
 **Professional Python Wrapper Generator for Linux**  
 
@@ -51,7 +46,7 @@ chmod +x create_wrapper.py
 python3 create_wrapper.py
 ```
 
----
+
 
 ## **Usage**
 

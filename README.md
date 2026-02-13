@@ -37,13 +37,13 @@ cd J-Wripper
 2. Make the generator script executable:
 
 ```bash
-chmod +x create_wrapper.py
+chmod +x j-wrapper.py
 ```
 
 3. Run the generator:
 
 ```bash
-python3 create_wrapper.py
+python3 j-wrapper.py
 ```
 
 

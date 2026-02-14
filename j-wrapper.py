@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-J EASY SCRIPT RUNNER
+J EASY SCRIPT RUNNER (UNIVERSAL)
 GUI Professional Edition
 Created by jh4ck3r
 """
@@ -92,68 +92,46 @@ class CustomPasswordDialog(tk.Toplevel):
 class JWrapperApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("J Project Platform - Script Runner")
+        self.root.title("J Project Platform - Universal Script Runner")
         self.root.geometry("850x750")
         self.root.configure(bg=COLORS["bg"])
 
         # --- SCROLLABLE AREA SETUP ---
-        # 1. Canvas
         self.canvas = tk.Canvas(root, bg=COLORS["bg"], highlightthickness=0)
-        
-        # 2. Scrollbar
         self.scrollbar = tk.Scrollbar(root, orient="vertical", command=self.canvas.yview)
-        
-        # 3. Frame inside Canvas (The Scrollable Frame)
         self.scroll_frame = tk.Frame(self.canvas, bg=COLORS["bg"])
-
-        # 4. Link Canvas Window
         self.canvas_window = self.canvas.create_window((0, 0), window=self.scroll_frame, anchor="nw")
-
-        # 5. Configure Scrolling
-        self.scroll_frame.bind(
-            "<Configure>",
-            self.on_frame_configure
-        )
-        self.canvas.bind(
-            "<Configure>",
-            self.on_canvas_configure
-        )
         
+        self.scroll_frame.bind("<Configure>", self.on_frame_configure)
+        self.canvas.bind("<Configure>", self.on_canvas_configure)
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
 
-        # 6. Pack (Layout)
         self.scrollbar.pack(side="right", fill="y")
         self.canvas.pack(side="left", fill="both", expand=True)
 
-        # Add mousewheel scrolling support
-        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel) # Windows
-        self.canvas.bind_all("<Button-4>", self._on_mousewheel)   # Linux Scroll Up
-        self.canvas.bind_all("<Button-5>", self._on_mousewheel)   # Linux Scroll Down
+        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
+        self.canvas.bind_all("<Button-4>", self._on_mousewheel)
+        self.canvas.bind_all("<Button-5>", self._on_mousewheel)
 
         self.create_content()
 
     def on_frame_configure(self, event):
-        """Reset the scroll region to encompass the inner frame"""
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
     def on_canvas_configure(self, event):
-        """When canvas resizes, resize the inner frame to match width"""
-        canvas_width = event.width
-        self.canvas.itemconfig(self.canvas_window, width=canvas_width)
+        self.canvas.itemconfig(self.canvas_window, width=event.width)
 
     def _on_mousewheel(self, event):
-        """Enable mouse scrolling"""
         if event.num == 5 or event.delta == -120:
             self.canvas.yview_scroll(1, "units")
         elif event.num == 4 or event.delta == 120:
             self.canvas.yview_scroll(-1, "units")
 
     def create_content(self):
-        # Add padding inside the scroll frame
         main_pad = tk.Frame(self.scroll_frame, bg=COLORS["bg"], padx=20, pady=20)
         main_pad.pack(fill="both", expand=True)
 
-        # --- HEADER (CENTERED) ---
+        # --- HEADER ---
         header_frame = tk.Frame(main_pad, bg=COLORS["bg"])
         header_frame.pack(fill="x", pady=(0, 20))
         
@@ -162,27 +140,23 @@ class JWrapperApp:
         tk.Label(header_frame, text="==============================", font=FONTS["subtitle"], bg=COLORS["bg"], fg=COLORS["cyan"]).pack(anchor="center")
         
         tk.Label(header_frame, text="Created by jh4ck3r", font=FONTS["subtitle"], bg=COLORS["bg"], fg=COLORS["green"]).pack(anchor="center", pady=(5,0))
-        tk.Label(header_frame, text="J Project Platform Meet: https://jprojectplatform.com", font=FONTS["subtitle"], bg=COLORS["bg"], fg="white").pack(anchor="center")
-        tk.Label(header_frame, text="Enjoy With J Project Platform", font=FONTS["subtitle"], bg=COLORS["bg"], fg="white").pack(anchor="center")
+        tk.Label(header_frame, text="J Project Platform.com", font=FONTS["subtitle"], bg=COLORS["bg"], fg="white").pack(anchor="center")
 
         # --- INTRO ---
         intro_card = tk.Frame(main_pad, bg=COLORS["card"], padx=15, pady=15)
         intro_card.pack(fill="x", pady=10)
         
-        tk.Label(intro_card, text="Welcome! This tool will help you create a wrapper for your Python scripts.", 
+        tk.Label(intro_card, text="Run ANY script/file from anywhere in the terminal.", 
                  font=("Segoe UI", 11, "bold"), bg=COLORS["card"], fg=COLORS["magenta"]).pack(anchor="w")
-        tk.Label(intro_card, text="A wrapper lets you run your script from anywhere in the terminal using a short command.", 
-                 font=FONTS["info"], bg=COLORS["card"], fg=COLORS["cyan"]).pack(anchor="w")
-        tk.Label(intro_card, text="You do NOT need to manually activate virtualenv (venv) if your script has one.", 
+        tk.Label(intro_card, text="Supports: Python (.py), Bash (.sh), Perl, Ruby, NodeJS, and Executables.", 
                  font=FONTS["info"], bg=COLORS["card"], fg=COLORS["cyan"]).pack(anchor="w")
 
         # --- STEP 1 ---
         step1_frame = tk.Frame(main_pad, bg=COLORS["bg"], pady=10)
         step1_frame.pack(fill="x")
         
-        tk.Label(step1_frame, text="Step 1: Enter the full path to your Python script", font=FONTS["step"], bg=COLORS["bg"], fg=COLORS["yellow"]).pack(anchor="w")
-        tk.Label(step1_frame, text="Example: /home/jproject/me.py", font=FONTS["info"], bg=COLORS["bg"], fg=COLORS["cyan"]).pack(anchor="w")
-        tk.Label(step1_frame, text="This should be the full absolute path to your script, not relative path.", font=FONTS["info"], bg=COLORS["bg"], fg=COLORS["cyan"]).pack(anchor="w")
+        tk.Label(step1_frame, text="Step 1: Select your File (Script or Binary)", font=FONTS["step"], bg=COLORS["bg"], fg=COLORS["yellow"]).pack(anchor="w")
+        tk.Label(step1_frame, text="Example: /home/jproject/tool.py OR /home/user/myscript.sh", font=FONTS["info"], bg=COLORS["bg"], fg=COLORS["cyan"]).pack(anchor="w")
         
         input1_frame = tk.Frame(step1_frame, bg=COLORS["bg"], pady=5)
         input1_frame.pack(fill="x")
@@ -196,9 +170,9 @@ class JWrapperApp:
         step2_frame = tk.Frame(main_pad, bg=COLORS["bg"], pady=10)
         step2_frame.pack(fill="x")
 
-        tk.Label(step2_frame, text="Step 2: Enter the virtualenv folder name (if your script has one)", font=FONTS["step"], bg=COLORS["bg"], fg=COLORS["yellow"]).pack(anchor="w")
-        tk.Label(step2_frame, text="Example: j-env", font=FONTS["info"], bg=COLORS["bg"], fg=COLORS["cyan"]).pack(anchor="w")
-        tk.Label(step2_frame, text="If your script does NOT have a venv, just press Enter (leave blank).", font=FONTS["info"], bg=COLORS["bg"], fg=COLORS["cyan"]).pack(anchor="w")
+        tk.Label(step2_frame, text="Step 2: Python Virtualenv Name (Optional)", font=FONTS["step"], bg=COLORS["bg"], fg=COLORS["yellow"]).pack(anchor="w")
+        tk.Label(step2_frame, text="Only use this if it is a Python script with a specific environment.", font=FONTS["info"], bg=COLORS["bg"], fg=COLORS["cyan"]).pack(anchor="w")
+        tk.Label(step2_frame, text="Leave blank for Bash, other languages, or standard Python.", font=FONTS["info"], bg=COLORS["bg"], fg=COLORS["text"]).pack(anchor="w")
 
         self.entry_venv = tk.Entry(step2_frame, font=FONTS["input"], bg=COLORS["input_bg"], fg="white", insertbackground="white", bd=0)
         self.entry_venv.pack(fill="x", ipady=5, pady=5)
@@ -207,15 +181,14 @@ class JWrapperApp:
         step3_frame = tk.Frame(main_pad, bg=COLORS["bg"], pady=10)
         step3_frame.pack(fill="x")
 
-        tk.Label(step3_frame, text="Step 3: Enter the wrapper name (short command to run your script)", font=FONTS["step"], bg=COLORS["bg"], fg=COLORS["yellow"]).pack(anchor="w")
-        tk.Label(step3_frame, text="Example: me", font=FONTS["info"], bg=COLORS["bg"], fg=COLORS["cyan"]).pack(anchor="w")
-        tk.Label(step3_frame, text="This will be the command you type in terminal to run your script from anywhere.", font=FONTS["info"], bg=COLORS["bg"], fg=COLORS["cyan"]).pack(anchor="w")
+        tk.Label(step3_frame, text="Step 3: Wrapper Name (Short Command)", font=FONTS["step"], bg=COLORS["bg"], fg=COLORS["yellow"]).pack(anchor="w")
+        tk.Label(step3_frame, text="This is the command you will type in the terminal.", font=FONTS["info"], bg=COLORS["bg"], fg=COLORS["cyan"]).pack(anchor="w")
 
         self.entry_name = tk.Entry(step3_frame, font=FONTS["input"], bg=COLORS["input_bg"], fg="white", insertbackground="white", bd=0)
         self.entry_name.pack(fill="x", ipady=5, pady=5)
 
         # --- BUTTON ---
-        tk.Button(main_pad, text="CREATE WRAPPER", command=self.process, 
+        tk.Button(main_pad, text="CREATE UNIVERSAL WRAPPER", command=self.process, 
                   bg=COLORS["magenta"], fg="black", font=("Segoe UI", 12, "bold"), 
                   bd=0, padx=20, pady=10, cursor="hand2").pack(fill="x", pady=20)
 
@@ -227,7 +200,9 @@ class JWrapperApp:
 
     # --- LOGIC ---
     def browse_file(self):
-        filename = filedialog.askopenfilename(title="Select Python Script")
+        # Updated to accept ALL files
+        filename = filedialog.askopenfilename(title="Select Any Script/File", 
+                                              filetypes=[("All Files", "*.*")])
         if filename:
             self.entry_path.delete(0, tk.END)
             self.entry_path.insert(0, filename)
@@ -258,7 +233,7 @@ class JWrapperApp:
 
         # Validation
         if not script_path or not os.path.isfile(script_path):
-            messagebox.showerror("Error", f"Script not found at {script_path}")
+            messagebox.showerror("Error", f"File not found at {script_path}")
             return
         if not wrapper_name:
             messagebox.showerror("Error", "Wrapper name cannot be empty.")
@@ -271,29 +246,82 @@ class JWrapperApp:
             self.log("Operation cancelled.", COLORS["red"])
             return
 
-        self.log(f"Creating wrapper...", COLORS["magenta"])
+        self.log(f"Analyzing file...", COLORS["magenta"])
 
-        # Content
+        # ==========================================
+        #  UNIVERSAL WRAPPER GENERATION LOGIC
+        # ==========================================
+        
         wrapper_content = f"""#!/usr/bin/env bash
 # ======================================================
-# Wrapper for {script_path}
-# Created using J Easy Script Runner
+# J-Wrapper for {script_path}
 # ======================================================
 SCRIPT="{script_path}"
 SCRIPT_DIR="$(dirname "$SCRIPT")"
+FILENAME="$(basename "$SCRIPT")"
+EXTENSION="${{FILENAME##*.}}"
+
+# 1. Navigate to directory (Crucial for relative imports)
 cd "$SCRIPT_DIR" || exit 1
 """
+
+        # Logic: If VENV is provided, force Python logic
         if venv_name:
             wrapper_content += f"""
+# --- Python Virtualenv Mode ---
 if [ -x "$SCRIPT_DIR/{venv_name}/bin/python3" ]; then
   exec "$SCRIPT_DIR/{venv_name}/bin/python3" "$SCRIPT" "$@"
 elif [ -x "$SCRIPT_DIR/{venv_name}/bin/python" ]; then
   exec "$SCRIPT_DIR/{venv_name}/bin/python" "$SCRIPT" "$@"
 else
+  echo "[!] Venv specified but not found. Fallback to system python."
   exec python3 "$SCRIPT" "$@"
-fi"""
+fi
+"""
         else:
-            wrapper_content += 'exec python3 "$SCRIPT" "$@"\n'
+            # Logic: Universal Detection Mode
+            wrapper_content += f"""
+# --- Universal Auto-Detect Mode ---
+
+case "$EXTENSION" in
+    py)
+        # Python
+        exec python3 "$SCRIPT" "$@"
+        ;;
+    sh|bash)
+        # Bash Script
+        exec bash "$SCRIPT" "$@"
+        ;;
+    js)
+        # Node JS
+        exec node "$SCRIPT" "$@"
+        ;;
+    rb)
+        # Ruby
+        exec ruby "$SCRIPT" "$@"
+        ;;
+    pl)
+        # Perl
+        exec perl "$SCRIPT" "$@"
+        ;;
+    php)
+        # PHP
+        exec php "$SCRIPT" "$@"
+        ;;
+    *)
+        # Fallback: Executable Binary or Unknown
+        # Try to execute directly
+        if [ -x "$SCRIPT" ]; then
+             exec "$SCRIPT" "$@"
+        else
+             # Attempt to make executable and run
+             # If it fails, fallback to bash if it looks like text
+             chmod +x "$SCRIPT" 2>/dev/null
+             exec "$SCRIPT" "$@"
+        fi
+        ;;
+esac
+"""
 
         # Write Temp
         temp_file = "/tmp/j_wrapper_temp.sh"
@@ -307,6 +335,7 @@ fi"""
             return
 
         # Move with Sudo
+        self.log(f"Installing wrapper to /usr/local/bin/...", COLORS["yellow"])
         success, msg = self.run_sudo_command(f"mv {temp_file} {target_file}", sudo_pass)
         if not success:
             self.log(f"Failed to move file: {msg}", COLORS["red"])
@@ -317,22 +346,13 @@ fi"""
             self.log(f"Failed to chmod: {msg}", COLORS["red"])
             return
 
-        # Final Success Message (Original Text)
-        self.log(f"\n✅ Wrapper created successfully at: {target_file}", COLORS["green"])
-        self.log(f"\nHow to use:", COLORS["blue"])
-        self.log(f"1. Open any terminal.", COLORS["cyan"])
-        self.log(f"2. Type the wrapper command: {wrapper_name}", COLORS["cyan"])
-        self.log(f"   Example: {wrapper_name}", COLORS["cyan"])
-        self.log(f"3. If your script takes arguments, you can pass them after the command:", COLORS["cyan"])
-        self.log(f"   Example: {wrapper_name} arg1 arg2 arg3", COLORS["cyan"])
+        # Final Success Message
+        self.log(f"\n✅ Wrapper '{wrapper_name}' created successfully!", COLORS["green"])
+        self.log(f"File Type Handled: Universal", COLORS["blue"])
+        self.log(f"\nHow to use:", COLORS["cyan"])
+        self.log(f"   Command: {wrapper_name} [args]", COLORS["cyan"])
         
-        if venv_name:
-            self.log(f"\nNote: The wrapper automatically uses your virtualenv '{venv_name}' if it exists.", COLORS["yellow"])
-        else:
-            self.log(f"\nNote: The wrapper uses system python3 since no venv was specified.", COLORS["yellow"])
-
-        self.log(f"\nTip: Keep your script and venv folder in one place for easy management.", COLORS["green"])
-        self.log(f"Enjoy with J Project Platform!", COLORS["magenta"])
+        self.log(f"\nEnjoy with J Project Platform!", COLORS["magenta"])
         
         messagebox.showinfo("Success", f"Wrapper '{wrapper_name}' created successfully!")
 

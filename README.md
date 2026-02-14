@@ -38,7 +38,7 @@ my-tool --complex --arguments here
 
 ---
 
-## ✨ **Features That Amaze**
+## ✨ **Features**
 
 ### 🎨 **Professional GUI Interface**
 - **Sleek Dark Theme** - Easy on the eyes during late-night sessions

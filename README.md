@@ -269,7 +269,7 @@ cat /usr/local/bin/your-wrapper
 
 ---
 
-## 📺 **Video Demo**
+## 📺 **Video**
 
 [![J-Wrapper Demo](https://i.imgur.com/AlnOojr.jpeg)](https://youtu.be/@jprojectplatform)
 
